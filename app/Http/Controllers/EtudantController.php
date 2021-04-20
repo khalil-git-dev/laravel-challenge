@@ -43,14 +43,14 @@ class EtudantController extends Controller
      */
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'nom' => 'required',
-        //     'prenom' => 'required',
-        //     'telephone' => 'required',
-        //     'age' => 'required',
-        //     'email' => 'required',
-        //     'classe_id' => 'required',
-        // ]);
+        $request->validate([
+            'nom' => 'required',
+            'prenom' => 'required',
+            'telephone' => 'required|unique:etudiants,telephone',
+            'age' => 'required',
+            'email' => 'required|max:50',
+            'classe_id' => 'required',
+        ]);
 
         // Formatage du matricule etudiant
         if(Etudiant::all()->last()->id == 0){
@@ -124,6 +124,7 @@ class EtudantController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         $etudiant = Etudiant::find($id);
         
         $fileImage = $request->file('avatar');
@@ -161,20 +162,5 @@ class EtudantController extends Controller
         return redirect()->route('etudiants.index')->with('messageDelete', "Un etudiant supprimé");
     }
 
-    public function filter($classe){
-        //dd('test');
-        //if(!empty($classe)){
-            // $classes = Classe::all();
-            // $etudiants = DB::table('etudiants')
-            //     ->where('classe_id', $classe)
-            //     ->get();
-            
-            // return view('filter')->with('classes', $classes);
-        
-
-        //}
-
-        // return redirect()->route('filter');
-    }
 
 }
